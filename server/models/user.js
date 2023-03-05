@@ -3,46 +3,46 @@ import mongoose from "mongoose";
 
 //Create Schema
 const UserSchema = new mongoose.Schema({
-    name: {
-        type:String,
-        required: true,
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: String,
+    enum: ["MainJuin", "SubJuin", "User"],
+    default: "User",
+  },
+  register_date: {
+    type: Date,
+    default: moment().format("YYYY-MM-DD hhLmm:ss"),
+  },
+  comments: [
+    {
+      post_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "posts",
+      },
+      comment_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "comments",
+      },
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
+  ],
+  posts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "posts",
     },
-    password: {
-        type: String,
-        required: true,
-    },
-    role: {
-        type: String,
-        enum: ["MainJuin", "SubJuin", "User"],
-        default: "User"
-    },
-    register_date: {
-        type: Date,
-        default: moment().format("YYYY-MM-DD hhLmm:ss"),
-    },
-    comments: [
-        {
-            post_id: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "posts"
-            },
-            comment_id: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "comments"
-            }
-        }
-    ],
-    posts: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "posts"
-        }
-    ]
+  ],
 });
 
 const User = mongoose.model("user", UserSchema);
